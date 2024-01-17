@@ -29,6 +29,6 @@ public class StatsClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getState(Map<String, Object> parameters) {
-        return get("/stats", parameters);
+        return get("/stats?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
 }
