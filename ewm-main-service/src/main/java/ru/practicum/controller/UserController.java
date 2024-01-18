@@ -26,7 +26,7 @@ public class UserController {
                                      @PositiveOrZero int from,
                                      @RequestParam(required = false, name = "size", defaultValue = "10")
                                      @Positive int size,
-                                     @RequestParam(name = "ids", required = false, defaultValue = "") Long[] ids) {
+                                     @RequestParam(name = "ids", required = false) Long[] ids) {
         return userService.getAllUsers(PageRequest.of(from / size, size), ids);
     }
 
