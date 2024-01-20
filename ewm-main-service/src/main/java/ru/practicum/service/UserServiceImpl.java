@@ -5,7 +5,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.dto.user.NewUserRequest;
 import ru.practicum.dto.user.UserDto;
+import ru.practicum.exp.NonExistentUserException;
 import ru.practicum.mapper.UserMapper;
+import ru.practicum.model.User;
 import ru.practicum.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -34,5 +36,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public UserDto replaceSubscriptionParameter(Long userId, Boolean permission) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NonExistentUserException(userId));
+        user.setPermission(permission);
+        return UserMapper.toUserDto(userRepository.save(user));
     }
 }

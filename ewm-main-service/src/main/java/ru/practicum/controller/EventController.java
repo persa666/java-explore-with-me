@@ -100,4 +100,13 @@ public class EventController {
         return eventService.getEventsByFilter(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort,
                 PageRequest.of(from / size, size), request);
     }
+
+    @GetMapping("/users/{userId}/subscriptions/events")
+    public List<EventShortDto> getActualEventsBySubscriberId(@PathVariable(name = "userId") @PositiveOrZero Long userId,
+                                                             @RequestParam(required = false, name = "from",
+                                                                     defaultValue = "0") @PositiveOrZero int from,
+                                                             @RequestParam(required = false, name = "size",
+                                                                     defaultValue = "10") @Positive int size) {
+        return eventService.getActualEventsBySubscriberId(userId, PageRequest.of(from / size, size));
+    }
 }

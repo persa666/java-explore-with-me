@@ -16,7 +16,6 @@ import ru.practicum.hit.HitShort;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.mapper.LocationMapper;
 import ru.practicum.model.*;
-import ru.practicum.model.QEvent;
 import ru.practicum.repository.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +33,7 @@ public class EventServiceImpl implements EventService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final RequestRepository requestRepository;
+    private final SubscriptionRepository subscriptionRepository;
 
     private final StatsClient statsClient;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -410,7 +410,7 @@ public class EventServiceImpl implements EventService {
             conditions.add(QEvent.event.eventDate.after(LocalDateTime.now()));
         }
         if (rangeEnd != null && rangeStart != null) {
-            if (LocalDateTime.parse(rangeStart, formatter).isAfter(LocalDateTime.parse(rangeEnd,formatter))) {
+            if (LocalDateTime.parse(rangeStart, formatter).isAfter(LocalDateTime.parse(rangeEnd, formatter))) {
                 throw new EventBadRequest("Неккоректные дата и время для поиска.");
             }
         }
@@ -460,5 +460,15 @@ public class EventServiceImpl implements EventService {
             }
         }
         return availableList;
+    }
+
+    @Override
+    public List<EventShortDto> getActualEventsBySubscriberId(Long userId, PageRequest pageRequest) {
+        List<Long> initiatorIds = subscriptionRepository.findAuthorOfContentIdBySubscriberId(userId);
+        return getEventsWithConfirmedRequests(eventRepository.findByInitiatorIdInAndEventDateAfterAndState(initiatorIds,
+                        LocalDateTime.now(), State.PUBLISHED, pageRequest)
+                .stream()
+                .map(EventMapper::toEventShortDto)
+                .collect(Collectors.toList()));
     }
 }

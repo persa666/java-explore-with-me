@@ -12,4 +12,6 @@ public interface UserService {
     List<UserDto> getAllUsers(PageRequest pageRequest, Long[] ids);
 
     void deleteUser(Long userId);
+
+    UserDto replaceSubscriptionParameter(Long userId, Boolean permission);
 }
