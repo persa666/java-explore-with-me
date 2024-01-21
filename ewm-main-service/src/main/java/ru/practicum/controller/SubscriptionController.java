@@ -61,7 +61,7 @@ public class SubscriptionController {
     }
 
     @GetMapping("/users/{userId}/subscriptions/outgoing")
-    List<ShortSubscriptionDtoForSubscriber> findSubscriptionsBySubscriberId(@PathVariable(name = "userId")
+    public List<ShortSubscriptionDtoForSubscriber> findSubscriptionsBySubscriberId(@PathVariable(name = "userId")
                                                                             @PositiveOrZero Long userId,
                                                                             @RequestParam(required = false,
                                                                                     name = "from", defaultValue = "0")
