@@ -26,6 +26,9 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "permission", nullable = false)
+    private Boolean permission = true;
+
     public User(String email, String name) {
         this.email = email;
         this.name = name;

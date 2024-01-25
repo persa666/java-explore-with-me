@@ -10,6 +10,7 @@ import ru.practicum.dto.user.UserDto;
 import ru.practicum.service.UserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -40,5 +41,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable(name = "userId") @PositiveOrZero Long userId) {
         userService.deleteUser(userId);
+    }
+
+    @PatchMapping("/users/{userId}/subscriptions")
+    public UserDto replaceSubscriptionParameter(@PathVariable(name = "userId") @PositiveOrZero Long userId,
+                                                @RequestParam(name = "permission") @NotNull Boolean permission) {
+        return userService.replaceSubscriptionParameter(userId, permission);
     }
 }

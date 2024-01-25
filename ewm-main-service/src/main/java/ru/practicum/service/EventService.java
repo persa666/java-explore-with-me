@@ -29,4 +29,6 @@ public interface EventService {
     List<EventShortDto> getEventsByFilter(String text, Long[] categories, Boolean paid, String rangeStart,
                                           String rangeEnd, Boolean onlyAvailable, String sort, PageRequest pageRequest,
                                           HttpServletRequest request);
+
+    List<EventShortDto> getActualEventsBySubscriberId(Long userId, PageRequest pageRequest);
 }

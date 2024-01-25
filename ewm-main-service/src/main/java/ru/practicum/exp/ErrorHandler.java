@@ -30,6 +30,17 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleSubscriptionNotFound(final NonExistentSubscriptionException e) {
+        return new ApiError(
+                HttpStatus.NOT_FOUND.name(),
+                "Требуемый объект не был найден.",
+                e.getMessage(),
+                LocalDateTime.now().format(formatter)
+        );
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleParamBadRequest(final MissingServletRequestParameterException e) {
         return new ApiError(
